@@ -25,4 +25,11 @@ int *dfs(Graph *graph);
 // The resultant array will be of size n_vertices and must be freed after use.
 int *bfs(Graph *graph);
 
+// Runs dijkstras single source shortest path algorithm on the given graph
+// sets results to the dist buffer provided
+// dist is an array of size n_vertices, this function will produce an error if the memory isn't supplied
+//
+// dist[k] = w means that the shortest path from start to k is w, and this array must be freed after use
+void dijkstras(Graph *graph, int start, int *dist);
+
 #endif

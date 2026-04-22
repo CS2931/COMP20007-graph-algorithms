@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "graph.h"
 #include "graphalgs.h"
@@ -55,7 +56,6 @@ int main(int argc, char **argv) {
   // Run the bfs algorithm on the read in graph
   int *bfs_order = bfs(graph);
 
-  // Print out the order in which the nodes were visited in the dfs
   printf("BFS Order:");
   for (int i = 0; i < graph_num_vertices(graph); i++) {
     printf(" %d", bfs_order[i]);
@@ -64,6 +64,24 @@ int main(int argc, char **argv) {
 
   free(bfs_order);
   bfs_order = NULL;
+
+  free_graph(graph);
+
+  // Run djikstra's algorithm on a dist buffer provided
+  int root = 0;
+  int n = graph_num_vertices(graph);
+  int *dist = malloc(sizeof(int) * n);
+  assert(dist);
+  dijkstras(graph, root, dist);
+
+  printf("Djikstra distances:");
+  for (int i = 0; i < graph_num_vertices(graph); i++) {
+    printf("%d -> %d: %d", root, i, dist[i]);
+  }
+  printf("\n");
+
+  free(dist);
+  dist = NULL;
 
   free_graph(graph);
 
