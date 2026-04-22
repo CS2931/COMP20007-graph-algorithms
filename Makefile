@@ -8,7 +8,7 @@
 
 # specifying the C Compiler and Compiler Flags for make to use
 CC     = gcc
-CFLAGS = -Wall -Wno-comment -std=c99
+CFLAGS = -Wall -Wno-comment -std=c99 -g
 
 # exe name and a list of object files that make up the program
 EXE    = main

@@ -116,9 +116,6 @@ int *bfs(Graph *graph) {
 // order[i] == k means that vertex k was visited ith in the order, while
 // visited[i] == true means that node i has been visited
 void bfs_explore(Graph *graph, int u, int *order, bool *visited, int *n_visited) {
-  order[*n_visited] = u;
-  (*n_visited)++;
-
   // use a list here
   // add to end, retrieve from start by convention will act as queue
   List *list = new_list();
