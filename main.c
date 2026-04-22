@@ -52,6 +52,19 @@ int main(int argc, char **argv) {
   free(dfs_order);
   dfs_order = NULL;
 
+  // Run the bfs algorithm on the read in graph
+  int *bfs_order = bfs(graph);
+
+  // Print out the order in which the nodes were visited in the dfs
+  printf("BFS Order:");
+  for (int i = 0; i < graph_num_vertices(graph); i++) {
+    printf(" %d", bfs_order[i]);
+  }
+  printf("\n");
+
+  free(bfs_order);
+  bfs_order = NULL;
+
   return 0;
 }
 
