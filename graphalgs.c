@@ -128,15 +128,15 @@ void bfs_explore(Graph *graph, int u, int *order, bool *visited, int *n_visited)
     int current = list_remove_start(list);
 
     // go through the neighbour retrieval pickle
-    int n_neighbours = graph_out_degree(graph, u);
+    int n_neighbours = graph_out_degree(graph, current);
     int *neighbours = malloc(sizeof(int) * n_neighbours);
-    graph_get_neighbours(graph, u, neighbours, NULL, n_neighbours);
+    graph_get_neighbours(graph, current, neighbours, NULL, n_neighbours);
 
     // process layer of neighbours
     for (int i = 0; i < n_neighbours; i++) {
       int k = neighbours[i];
       if (visited[k] == 0) {
-        visited[k] == 1;
+        visited[k] = 1;
         order[*n_visited] = k;
         (*n_visited)++;
         list_add_end(list, k);

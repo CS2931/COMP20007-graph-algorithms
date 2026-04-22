@@ -65,6 +65,8 @@ int main(int argc, char **argv) {
   free(bfs_order);
   bfs_order = NULL;
 
+  free_graph(graph);
+
   return 0;
 }
 

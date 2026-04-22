@@ -23,6 +23,6 @@ int *dfs(Graph *graph);
 // visits the nodes in the graph.
 //
 // The resultant array will be of size n_vertices and must be freed after use.
-int *bfs(Graph *graph)
+int *bfs(Graph *graph);
 
 #endif
