@@ -120,6 +120,10 @@ void bfs_explore(Graph *graph, int u, int *order, bool *visited, int *n_visited)
   // add to end, retrieve from start by convention will act as queue
   List *list = new_list();
   list_add_end(list, u);
+  order[*n_visited] = u;
+  visited[u] = 1;
+  (*n_visited)++;
+  
 
   while (list_is_empty(list) == false) {
     int current = list_remove_start(list);
@@ -133,8 +137,8 @@ void bfs_explore(Graph *graph, int u, int *order, bool *visited, int *n_visited)
     for (int i = 0; i < n_neighbours; i++) {
       int k = neighbours[i];
       if (visited[k] == 0) {
-        visited[k] = 1;
         order[*n_visited] = k;
+        visited[k] = 1;
         (*n_visited)++;
         list_add_end(list, k);
       }
