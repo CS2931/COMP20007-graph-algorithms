@@ -201,4 +201,12 @@ void dijkstras(Graph *graph, int start, int *dist) {
   free(prev);
   free(processed);
   free(PQ);
+
+  // transform results back into what we want
+  // set each dist to the max for simplicity in the algorithm, but will convert back here
+  for (int i = 0; i < n; i++) {
+    if (dist[i] == INT_MAX) {
+      dist[i] == -1;
+    }
+  }
 }
