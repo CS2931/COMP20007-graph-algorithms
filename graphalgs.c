@@ -187,7 +187,7 @@ void dijkstras(Graph *graph, int start, int *dist) {
     for (int i = 0; i < n_neighbours; i++) {
       int k = neighbours[i];
       
-      if (processed[k] == 0 && dist[k] > dist[current] + weights[k]) {
+      if (processed[k] == 0 && dist[k] > dist[current] + weights[i]) {
         prev[k] = current;
         dist[k] = dist[current] + weights[i];
         priority_queue_update(PQ, k, dist[k]);
