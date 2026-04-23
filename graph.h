@@ -15,6 +15,9 @@ typedef struct graph Graph;
 // Creates a new graph with n_vertices and no edges
 Graph *new_graph(int n_vertices, bool directed);
 
+// Determines whether a graph is directed
+bool is_directed_graph(Graph *graph);
+
 // Frees the memory associated with a graph
 void free_graph(Graph *graph);
 

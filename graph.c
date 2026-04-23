@@ -183,6 +183,11 @@ int graph_out_degree(Graph *graph, int u) {
   return list_size(graph->vertices[u]);
 }
 
+// Determines whether a graph is directed
+bool is_directed_graph(Graph *graph) {
+  return graph->directed;
+}
+
 // Prints the graph as an adjacency list in the format:
 // 0: [a (w_a), b (w_b), ..., z (w_z)]
 // ...

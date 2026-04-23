@@ -224,3 +224,85 @@ void dijkstras(Graph *graph, int start, int *dist, List **paths) {
   free(processed);
   free(PQ);
 }
+
+// runs prims algorithm on the given graph
+// sets results to the from and to arrays provided
+// each edge (from[i], to[i]) is included in the final MST
+// 
+// function will produce an error if the memory is not supplied
+// from and to must be freed after use
+bool prims(Graph *graph, int *from, int *to) {
+  // there's a fancier way of doing this but this is just as good
+  if (is_directed_graph(graph)) {
+    return false;
+  }
+
+  int n = graph_num_vertices(graph);
+
+  int *prev = malloc(sizeof(int) * n);
+  int *included = malloc(sizeof(int) * n);
+  int *cost = malloc(sizeof(int) * n);
+  assert(cost);
+  assert(prev);
+  assert(included);
+
+  PriorityQueue *PQ = new_priority_queue();
+
+  for (int i = 0; i < n; i++) {
+    prev[i] = -1;
+    cost[i] = (i == 0) ? 0 : INT_MAX;
+    included[i] = 0;
+    priority_queue_insert(PQ, i, cost[i]);
+  }
+  
+  while (priority_queue_is_empty(PQ) == false) {
+    int current = priority_queue_remove_min(PQ);
+    included[current] = 1;
+
+    int n_neighbours = graph_out_degree(graph, current);
+    int *neighbours = malloc(sizeof(int) * n_neighbours);
+    int *weights = malloc(sizeof(int) * n_neighbours);
+    assert(neighbours);
+    assert(weights);
+    graph_get_neighbours(graph, current, neighbours, weights, n_neighbours);
+
+    for (int i = 0; i < n_neighbours; i++) {
+      int k = neighbours[i];
+      
+      if (included[k] == 0 && cost[k] > weights[i]) {
+        prev[k] = current;
+        cost[k] = weights[i];
+        priority_queue_update(PQ, k, cost[k]);
+      }
+    }
+
+    free(neighbours);
+    free(weights);
+  }
+
+  // root is an isolated node
+  if (included[0] == -1) {
+    return false;
+  }
+
+  // reconstruct the edge set from the prev
+  // index from 1 as root 0 won't have a previous
+  for (int i = 1; i < n; i++) {
+    int k = i - 1; // so we index from 0, and can have length n-1
+    if (included[i] == 0) {
+      // means that there is no MST and the algorithm failed
+      return false; 
+    }
+
+    from[k] = prev[i];
+    to[k] = i;
+  }
+
+
+  // free dynamically allocated resources
+  free(prev);
+  free(included);
+  free(cost);
+  free(PQ);
+  return true;
+}

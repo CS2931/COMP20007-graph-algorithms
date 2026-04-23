@@ -33,4 +33,12 @@ int *bfs(Graph *graph);
 // dist[k] = w means that the shortest path from start to k is w, and this array must be freed after use
 void dijkstras(Graph *graph, int start, int *dist, List **paths);
 
+// runs prims algorithm on the given graph
+// sets results to the from and to arrays provided
+// each edge (from[i], to[i]) is included in the final MST
+// 
+// function will produce an error if the memory is not supplied
+// from and to must be freed after use
+bool prims(Graph *graph, int *from, int *to);
+
 #endif

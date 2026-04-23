@@ -40,13 +40,14 @@ int main(int argc, char **argv) {
   Graph *graph = read_graph_from_stdin();
   printf("Read in the following graph:\n");
   graph_print_adjacency_lists(graph);
+  int n = graph_num_vertices(graph);
 
   // Run the dfs algorithm on the read in graph
   int *dfs_order = dfs(graph);
 
   // Print out the order in which the nodes were visited in the dfs
   printf("DFS Order:");
-  for (int i = 0; i < graph_num_vertices(graph); i++) {
+  for (int i = 0; i < n; i++) {
     printf(" %d", dfs_order[i]);
   }
   printf("\n");
@@ -58,7 +59,7 @@ int main(int argc, char **argv) {
   int *bfs_order = bfs(graph);
 
   printf("BFS Order:");
-  for (int i = 0; i < graph_num_vertices(graph); i++) {
+  for (int i = 0; i < n; i++) {
     printf(" %d", bfs_order[i]);
   }
   printf("\n");
@@ -68,7 +69,6 @@ int main(int argc, char **argv) {
 
   // Run djikstra's algorithm on a dist buffer provided
   int root = 0;
-  int n = graph_num_vertices(graph);
   int *dist = malloc(sizeof(int) * n);
   List **paths = malloc(sizeof(List *) * n);
   assert(dist);
@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
   dijkstras(graph, root, dist, paths);
 
   printf("Djikstra results: \n");
-  for (int i = 0; i < graph_num_vertices(graph); i++) {
+  for (int i = 0; i < n; i++) {
     printf(" - dist[%d]=%d with path: ", i, dist[i]);
 
     ListIterator *path_iterator = new_list_iterator(paths[i]);
@@ -96,7 +96,35 @@ int main(int argc, char **argv) {
   free(dist);
   free(paths);
   dist = NULL;
+  paths = NULL;
 
+  // Run prims algorithm on the read in graph
+  int *from = malloc(sizeof(int) * n);
+  int *to = malloc(sizeof(int) * n);
+  assert(from);
+  assert(to);
+
+  bool is_mst = prims(graph, from, to);
+
+  if (is_mst) {
+    printf("Prims MST edges: ");
+    for (int i = 0; i < n - 1; i++) {
+      printf("(%d, %d)", from[i], to[i]);
+      if (i != n - 2) {
+        printf(", ");
+      }
+    }
+    printf("\n");
+  } else {
+    printf("failed to create MST, this could be due to the graph being directed or disconnected\n");
+  }
+
+  free(from);
+  free(to);
+  from = NULL;
+  to = NULL;
+
+  // clean up
   free_graph(graph);
 
   return 0;
