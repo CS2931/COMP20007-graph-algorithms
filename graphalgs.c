@@ -158,20 +158,21 @@ void bfs_explore(Graph *graph, int u, int *order, bool *visited, int *n_visited)
 // dist[k] = w means that the shortest path from start to k is w, and this array must be freed after use
 void dijkstras(Graph *graph, int start, int *dist) {
   int n = graph_num_vertices(graph);
+
   int *prev = malloc(sizeof(int) * n);
-  assert(prev);
   int *processed = malloc(sizeof(int) * n);
+  assert(prev);
+  assert(processed);
+
+  PriorityQueue *PQ = new_priority_queue();
 
   for (int i = 0; i < n; i++) {
     prev[i] = -1;
-    dist[i] = INT_MAX; 
+    dist[i] = (i == start) ? 0 : INT_MAX;
     processed[i] = 0;
+    priority_queue_insert(PQ, i, dist[i]);
   }
-
-  dist[start] = 0;
-  PriorityQueue *PQ = new_priority_queue();
-  priority_queue_insert(PQ, start, dist[start]);
-
+  
   while (priority_queue_is_empty(PQ) == false) {
     int current = priority_queue_remove_min(PQ);
     processed[current] = 1;
@@ -186,10 +187,9 @@ void dijkstras(Graph *graph, int start, int *dist) {
     for (int i = 0; i < n_neighbours; i++) {
       int k = neighbours[i];
       
-      // todo: check that the conditional ends when the first condition is evaluated
       if (processed[k] == 0 && dist[k] > dist[current] + weights[k]) {
         prev[k] = current;
-        dist[k] = dist[current] + weights[k];
+        dist[k] = dist[current] + weights[i];
         priority_queue_update(PQ, k, dist[k]);
       }
     }

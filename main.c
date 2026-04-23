@@ -65,8 +65,6 @@ int main(int argc, char **argv) {
   free(bfs_order);
   bfs_order = NULL;
 
-  free_graph(graph);
-
   // Run djikstra's algorithm on a dist buffer provided
   int root = 0;
   int n = graph_num_vertices(graph);
@@ -74,9 +72,9 @@ int main(int argc, char **argv) {
   assert(dist);
   dijkstras(graph, root, dist);
 
-  printf("Djikstra distances:");
+  printf("Djikstra distances from root node %d: \n", root);
   for (int i = 0; i < graph_num_vertices(graph); i++) {
-    printf("%d -> %d: %d", root, i, dist[i]);
+    printf("dist[%d]: %d, ", i, dist[i]);
   }
   printf("\n");
 
