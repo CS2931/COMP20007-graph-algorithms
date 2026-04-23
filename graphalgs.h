@@ -9,6 +9,7 @@
 #define GRAPHALGS_H
 
 #include "graph.h"
+#include "list.h"
 
 // Runs a depth first search on the given graph, returning a dynamically
 // allocated array of integers representing the order in which the DFS
@@ -30,6 +31,6 @@ int *bfs(Graph *graph);
 // dist is an array of size n_vertices, this function will produce an error if the memory isn't supplied
 //
 // dist[k] = w means that the shortest path from start to k is w, and this array must be freed after use
-void dijkstras(Graph *graph, int start, int *dist);
+void dijkstras(Graph *graph, int start, int *dist, List **paths);
 
 #endif

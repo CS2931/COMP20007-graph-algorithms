@@ -153,10 +153,12 @@ void bfs_explore(Graph *graph, int u, int *order, bool *visited, int *n_visited)
 
 // Runs dijkstras single source shortest path algorithm on the given graph
 // sets results to the dist buffer provided
-// dist is an array of size n_vertices, this function will produce an error if the memory isn't supplied
+// dist is an int array of size n_vertices, paths is a List array of size n_vertices
+// This function will produce an error if the memory is not supplied
 //
 // dist[k] = w means that the shortest path from start to k is w, and this array must be freed after use
-void dijkstras(Graph *graph, int start, int *dist) {
+// paths[k] gives a list denoting the path from start to k, this array must also be freed after use
+void dijkstras(Graph *graph, int start, int *dist, List **paths) {
   int n = graph_num_vertices(graph);
 
   int *prev = malloc(sizeof(int) * n);
@@ -198,15 +200,27 @@ void dijkstras(Graph *graph, int start, int *dist) {
     free(weights);
   }
 
+  // reconstruct the paths using the prev array
+  // use linked list because simpler to manage and can easily reverse prev order by inserting at the start
+  for (int i = 0; i < n; i++) {
+    if (processed[i] == 0) {
+      dist[i] = -1;
+      continue;
+    }
+
+    List *path = new_list();
+    int j = i;
+    while (j != -1) {
+      // add the start builds in **reverse order**, so we don't have to flip it
+      list_add_start(path, j);
+      j = prev[j];
+    }
+    paths[i] = path;
+  }
+
+
+  // free dynamically allocated resources
   free(prev);
   free(processed);
   free(PQ);
-
-  // transform results back into what we want
-  // set each dist to the max for simplicity in the algorithm, but will convert back here
-  for (int i = 0; i < n; i++) {
-    if (dist[i] == INT_MAX) {
-      dist[i] == -1;
-    }
-  }
 }

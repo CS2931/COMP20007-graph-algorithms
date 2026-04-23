@@ -13,6 +13,7 @@
 #include "graph.h"
 #include "graphalgs.h"
 #include "priorityqueue.h"
+#include "list.h"
 
 // Read in a graph from stdin where the input format is:
 //
@@ -69,16 +70,31 @@ int main(int argc, char **argv) {
   int root = 0;
   int n = graph_num_vertices(graph);
   int *dist = malloc(sizeof(int) * n);
+  List **paths = malloc(sizeof(List *) * n);
   assert(dist);
-  dijkstras(graph, root, dist);
+  assert(paths);
+  dijkstras(graph, root, dist, paths);
 
-  printf("Djikstra distances from root node %d: \n", root);
+  printf("Djikstra results: \n");
   for (int i = 0; i < graph_num_vertices(graph); i++) {
-    printf("dist[%d]: %d, ", i, dist[i]);
+    printf(" - dist[%d]=%d with path: ", i, dist[i]);
+
+    ListIterator *path_iterator = new_list_iterator(paths[i]);
+    while (list_iterator_has_next(path_iterator)) {
+      int node = list_iterator_next(path_iterator);
+      printf("%d", node);
+      if (node != i) {
+        printf(" -> ");
+      }
+    }
+    printf("\n");
+    free_list_iterator(path_iterator);
+    free_list(paths[i]);
   }
   printf("\n");
 
   free(dist);
+  free(paths);
   dist = NULL;
 
   free_graph(graph);
